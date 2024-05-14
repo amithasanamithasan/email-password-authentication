@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import Root from './Components/Root/Root.jsx';
 import Home from './Components/Home/Home.jsx';
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
 import Login from './Components/Login/Login.jsx';
 import Registerd from './Components/Registerd/Registerd.jsx';
 import Heroregisterd from './Components/Herorgisterd/Heroregisterd.jsx';
+
+import {
+  createBrowserRouter, RouterProvider,
+} from "react-router-dom";
+
+
 
 
 const router = createBrowserRouter([

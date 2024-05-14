@@ -1,33 +1,90 @@
+ import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { useState } from "react";
+import auth from "../../firebase/firebase.config";
+
+
 
 
 const Login = () => {
+  const[success,setSuccess]=useState('');
+  const[errormessage,setErrormessage]= useState('');
+  
+ const handelLogin = e =>{
+  e.preventDefault();
+  const email=e.target.email.value;
+const password=e.target.password.value;
+
+console.log(email,password);
+setSuccess('');
+setErrormessage('');
+
+
+if (password.length < 6) {
+  setErrormessage('Password should be at least 6 characters');
+  return;
+}
+else if(!/[A-Z]/.test(password)) 
+  {
+    setErrormessage('Password must have 8 digit  at least one Uppercase Character');
+    return;
+   }
+
+// validation
+
+
+signInWithEmailAndPassword(auth, email, password)
+.then(result=>{
+ console.log(result.user);
+ setSuccess('User created successfully');
+})
+.catch(error=>{
+  console.log(error);
+  setErrormessage(error.message);
+
+})
+  }
+ 
     return (
-        <div>
-         
-
-<form className="max-w-sm mx-auto rounded-lg">
-  <div className="mb-5">
-    <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-    <input type="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:for-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" for="name@flowbite.com" required />
+      <div>
+      <div className="hero min-h-screen bg-base-200">
+<div className="hero-content flex-col lg:flex-row-reverse">
+<div className="text-center lg:text-left">
+<h1 className="text-5xl font-bold">LOGIN  Now!</h1>
+<p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+</div>
+<div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+<form onSubmit={ handelLogin}  className="card-body">
+  <div className="form-control">
+    <label className="label">
+      <span className="label-text">Email</span>
+    </label>
+    <input type="email" name="email" placeholder="email" className="input input-bordered" required />
   </div>
-  <div className="mb-5">
-    <label for="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-    <input type="password" id="password" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:for-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
+  <div className="form-control">
+    <label className="label">
+      <span className="label-text">Password</span>
+    </label>
+    <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+    <label className="label">
+      <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+    </label>
   </div>
-  <div className="mb-5">
-    <label for="repeat-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repeat password</label>
-    <input type="password" id="repeat-password" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:for-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
+  <div className="form-control mt-6">
+    <button  className="btn btn-primary">Login</button>
   </div>
-  <div className="flex items-start mb-5">
-    <div className="flex items-center h-5">
-      <input id="terms" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
-    </div>
-    <label for="terms" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a></label>
-  </div>
-  <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register new account</button>
 </form>
-
-        </div>
+ 
+{
+    success &&<p className="right-3 py-3 font-serif text-center text-green-600"> {success} </p>
+}
+{
+    errormessage && <p className= "right-3 py-3 font-serif text-center text-red-600">{errormessage} </p>
+}
+</div>
+</div>
+</div>
+  </div>
     );
 };
 
