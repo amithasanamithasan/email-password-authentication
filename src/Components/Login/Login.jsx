@@ -1,7 +1,9 @@
- import { signInWithEmailAndPassword } from "firebase/auth";
+ import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 
-import { useState } from "react";
+ import { useRef, useState } from "react";
 import auth from "../../firebase/firebase.config";
+import { Link } from "react-router-dom";
+
 
 
 
@@ -9,7 +11,8 @@ import auth from "../../firebase/firebase.config";
 const Login = () => {
   const[success,setSuccess]=useState('');
   const[errormessage,setErrormessage]= useState('');
-  
+  const emailRef =useRef(null);
+
  const handelLogin = e =>{
   e.preventDefault();
   const email=e.target.email.value;
@@ -30,19 +33,40 @@ else if(!/[A-Z]/.test(password))
     return;
    }
 
+ 
+
 // validation
 
 
 signInWithEmailAndPassword(auth, email, password)
 .then(result=>{
  console.log(result.user);
- setSuccess('User created successfully');
+ setSuccess('User LogIn  successfully');
 })
 .catch(error=>{
   console.log(error);
   setErrormessage(error.message);
 
 })
+  }
+  const handelresetpassword=()=>{
+  const email=emailRef.current.value;
+  if(!email){
+    console.log('please provied an  email' ,emailRef.current.value)
+    return;
+  }
+  else if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email))
+    {
+   console.log('please right a valid email');
+   return;
+  }
+    sendPasswordResetEmail(auth,email)
+    .then(()=>{
+alert('please checking your email');
+    })
+    .catch(error=>{
+      console.log(error.message);
+    })
   }
  
     return (
@@ -54,25 +78,37 @@ signInWithEmailAndPassword(auth, email, password)
 <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
 </div>
 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+
 <form onSubmit={ handelLogin}  className="card-body">
+
   <div className="form-control">
     <label className="label">
       <span className="label-text">Email</span>
     </label>
-    <input type="email" name="email" placeholder="email" className="input input-bordered" required />
+    <input type="email" 
+    name="email" 
+    ref={emailRef}
+    placeholder="email" 
+    className="input input-bordered"  />
   </div>
+
   <div className="form-control">
     <label className="label">
       <span className="label-text">Password</span>
     </label>
-    <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+
+    <input type="password" name="password" placeholder="password" className="input input-bordered" />
+   
     <label className="label">
-      <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+      <a onClick={ handelresetpassword} href="#" className="label-text-alt link link-hover">Forgot password?</a>
     </label>
   </div>
+
   <div className="form-control mt-6">
     <button  className="btn btn-primary">Login</button>
   </div>
+  
+
 </form>
  
 {
@@ -81,6 +117,7 @@ signInWithEmailAndPassword(auth, email, password)
 {
     errormessage && <p className= "right-3 py-3 font-serif text-center text-red-600">{errormessage} </p>
 }
+<p className="px-3 text-1xl text-cyan-800 font-serif">  Create Login  Page? Or Please<Link to ="/registerd" className="underline"> Register </Link></p>
 </div>
 </div>
 </div>

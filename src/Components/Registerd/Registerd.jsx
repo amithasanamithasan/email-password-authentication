@@ -3,6 +3,7 @@ import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Registerd = () => {
 // success message er jonno state declear korci 
@@ -109,6 +110,8 @@ setSuccess('User created successfully');
   </div>  
 
   <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 dark:md:hover:bg-fuchsia-600">Register new account</button>
+
+
 </form>
 
  {/* jodi state e success thake thole amke User created successfully dekhao */}
@@ -121,7 +124,7 @@ setSuccess('User created successfully');
 {
     errormessage && <p className= "right-3 py-3 font-serif text-center text-red-600">{errormessage} </p>
 }
-
+<p  className="text-2xl py-3 text-orange-600 font-serif text-center">Already Have an Account Please!<Link to ="/login" className="underline">  Login</Link></p>
 
         </div>
       
